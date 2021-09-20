@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -101,9 +100,7 @@ public class OmniDrive extends SubsystemBase
         motorOuts = new double[Constants.MOTOR_NUM];
 
         for (int i=0; i<Constants.MOTOR_NUM; i++) {
-            //vmx encoders[i] = new Encoder(i*2, i*2+1, false, Encoder.EncodingType.k4X);
-            //vmx encoders[i].setDistancePerPulse(Constants.KENCODERDISTPERPULSE);
-            //vmx encoderDists[i] = encoders[i].getDistance();
+
             encoders[i] = new TitanQuadEncoder(motors[i], i, Constants.KENCODERDISTPERPULSE);
             encoders[i].reset();
             encoderDists[i] = encoders[i].getEncoderDistance();
@@ -112,8 +109,8 @@ public class OmniDrive extends SubsystemBase
         // x, y and w speed controler
         pidControllers = new PIDController[Constants.PID_NUM];
         //Speed control
-        pidControllers[0] = new PIDController(1.3, 11.0, 0.04, pid_dT);  //x
-        pidControllers[1] = new PIDController(1.3, 11.0, 0.04, pid_dT);  //y 2.0,32.0,0.02
+        pidControllers[0] = new PIDController(1.5, 15, 0.05, pid_dT);  //x
+        pidControllers[1] = new PIDController(1.5, 15, 0.05, pid_dT);  //y 2.0,32.0,0.02
         pidControllers[2] = new PIDController(2.5,0.0,0.05, pid_dT);    //w
         pidControllers[2].enableContinuousInput(-Math.PI, Math.PI);
 
@@ -126,8 +123,8 @@ public class OmniDrive extends SubsystemBase
         gyro.zeroYaw();
 
 
-        setPose(m_points.getPoint("jigOffset"));
-        setPose(m_points.getPoint("Pick"));
+         setPose(m_points.getPoint("jigOffset"));
+    //    setPose(m_points.getPoint("Zero"));
         setreferencePose();
 
 
@@ -135,12 +132,12 @@ public class OmniDrive extends SubsystemBase
 
     public void setreferenceHeading() {
 
-        Globals.referenceHeading = gyro.getCompassHeading() * Math.PI / 180;
+        Globals.referenceHeading = filter1.calculate(gyro.getCompassHeading() * Math.PI / 180);
     }
 
     public double getCompassHeading(){
 
-        return gyro.getCompassHeading() * Math.PI / 180;
+        return filter2.calculate(gyro.getCompassHeading() * Math.PI / 180);
     }
 
     public void setreferencePose(){
@@ -337,6 +334,8 @@ public class OmniDrive extends SubsystemBase
          * Updates for outputs to the shuffleboard
          */
 
+        Globals.curPose = getPose();
+
         D_curHeading.setDouble(curHeading);
         D_curHeading.setDouble(curHeading*180/Math.PI);
         D_tgtHeading.setDouble(targetHeading*180/Math.PI);
@@ -350,13 +349,9 @@ public class OmniDrive extends SubsystemBase
         D_odoX.setDouble(odometryX);
         D_odoY.setDouble(odometryY);
         D_odoW.setDouble(odometryW);
-        Globals.curPose = getPose();
-        // Points.curPoseTransformed = new Pose2d(Globals.curPose.getTranslation(), Globals.curPose.getRotation().times(-1));
 
-        // SmartDashboard.putString("curposetransformed", Points.curPoseTransformed.toString());
         SmartDashboard.putString("relativePose", Globals.debug11);
         SmartDashboard.putString("curPose", Globals.curPose.toString());
-        // SmartDashboard.putString("referencePose", Globals.referencePose.toString());
         Globals.compassHeading = getCompassHeading();
         D_Compass.setDouble(Globals.compassHeading);
         D_HeadingError.setDouble(Globals.headingError);

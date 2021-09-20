@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Globals;
 import frc.robot.RobotContainer;
-import frc.robot.commands.auto.PickCommands.ArmPickX;
-import frc.robot.commands.auto.PickCommands.ArmPickY;
+import frc.robot.commands.auto.PickCommands.ArmPick;
 import frc.robot.commands.auto.PickCommands.GripperPick;
 import frc.robot.commands.auto.PickCommands.RobotPick;
 import frc.robot.subsystems.Vision;
@@ -72,10 +71,8 @@ public class Pick extends AutoCommand {
       
                         new RobotPick(0, 0, 0, 0.1), 
                         new WaitCommand(0.5), 
-                        new ArmPickX(0.2),
-                        new WaitCommand(1), 
-                        new ArmPickY(0.3),
-                        new WaitCommand(0.5),
+                        new ArmPick(0.3),
+                        new WaitCommand(0.5), 
                         new GripperPick(), 
                         new WaitCommand(0.5),
                         new MoveArmXY(Constants.ARM2 + offsetX, Constants.ARM1 + offsetY, 0, 0, 0.3)
@@ -90,10 +87,8 @@ public class Pick extends AutoCommand {
                         
                         new RobotPick(3, 0, 0, 0.1),
                         new WaitCommand(0.5), 
-                        new ArmPickX(0.2),
-                        new WaitCommand(1), 
-                        new ArmPickY(0.3),
-                        new WaitCommand(0.5),
+                        new ArmPick(0.3),
+                        new WaitCommand(0.5), 
                         new GripperPick(),
                         new WaitCommand(0.5),
                         new MoveArmXY(Constants.ARM2 + offsetX, Constants.ARM1 + offsetY, 0, 0, 0.3)
@@ -103,16 +98,13 @@ public class Pick extends AutoCommand {
                 Map.entry(CommandSelector.KITKAT, 
                     new SequentialCommandGroup( 
                         
-                        new RobotPick(2, 0, 0, 0.1),
-                        new WaitCommand(0.5), 
-                        new ArmPickX(0.2),
-                        new WaitCommand(1), 
-                        new GripperPick(7),
-                        new ArmPickY(0.3),
-                        new WaitCommand(0.5),
-                        new GripperPick(),
-                        new WaitCommand(0.5),
-                        new MoveArmXY(Constants.ARM2 + offsetX, Constants.ARM1 + offsetY, 0, 0, 0.3)
+                        new RobotPick(2, 0, 0, 0.1)
+                        // new WaitCommand(0.5), 
+                        // new ArmPick(0.3),
+                        // new WaitCommand(0.5), 
+                        // new GripperPick(),
+                        // new WaitCommand(0.5),
+                        // new MoveArmXY(Constants.ARM2 + offsetX, Constants.ARM1 + offsetY, 0, 0, 0.3)
                     )
                 ),
                             
@@ -121,13 +113,8 @@ public class Pick extends AutoCommand {
                         
                         new RobotPick(1, 0, 0, 0.1),
                         new WaitCommand(0.5), 
-                        new ArmPickX(0.2),
-                        new WaitCommand(1), 
-                        // new GripperPick(5),
-                        // new ArmPickY(0.3, 0.05),
-                        new GripperPick(7),
-                        new ArmPickY(0.3),
-                        new WaitCommand(0.5),
+                        new ArmPick(0.3),
+                        new WaitCommand(0.5), 
                         new GripperPick(),
                         new WaitCommand(0.5),
                         new MoveArmXY(Constants.ARM2 + offsetX, Constants.ARM1 + offsetY, 0, 0, 0.3))
@@ -144,7 +131,7 @@ public class Pick extends AutoCommand {
       
             Pick::selectCmd123
       
-            //can use clearGroupedCommands() to reuse commands
+
             ) 
             
         );

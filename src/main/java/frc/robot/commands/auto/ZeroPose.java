@@ -21,7 +21,6 @@ public class ZeroPose extends CommandBase{
   public ZeroPose(){
 
 
-
   }
 
   @Override
@@ -35,11 +34,11 @@ public class ZeroPose extends CommandBase{
     compassW = m_omnidrive.getCompassHeading();
 
 
-    offsetW = (Globals.referenceHeading - compassW)/1.5;
+    offsetW = (Globals.referenceHeading - compassW)/2;
     Globals.headingError = offsetW;
 
 
-    cmd = new MoveRobot(2, -offsetW , 0, 0, 0.1);
+    cmd = new MoveRobot(2, offsetW , 0, 0, 0.1);
 
 
   }

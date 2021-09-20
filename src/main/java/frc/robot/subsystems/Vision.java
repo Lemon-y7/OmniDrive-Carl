@@ -47,12 +47,12 @@ public class Vision extends SubsystemBase
     public void boxLook() {
 
       pickedflag = true;
-      cameraAngle = 120;
+      cameraAngle = -10;
     }
     
     public void itemLook() {
       pickedflag = false;
-      cameraAngle = 25 ;
+      cameraAngle = 105 ;
     }
 
     public void readBarcode()
@@ -263,7 +263,10 @@ public class Vision extends SubsystemBase
 
         // getDropPose("YellowBox", "GreenBox", "Drop2"); 
         
-        
+        Globals.kitkat = SmartDashboard.getBoolean("KitKat", false);
+        Globals.chips = SmartDashboard.getBoolean("Chips", false);
+        Globals.nissin = SmartDashboard.getBoolean("Nissin", false);
+        Globals.ball = SmartDashboard.getBoolean("Ball", false);        
 
         SmartDashboard.putNumber("curItem", Globals.curItem);
         SmartDashboard.putNumber("chipy", getChips(1));
@@ -284,14 +287,12 @@ public class Vision extends SubsystemBase
             SmartDashboard.putBoolean("Get New Barcode", false);
         }
         SmartDashboard.putNumber("debug8", Globals.debug8);
-        SmartDashboard.putString("relativePose2", Globals.debug9);
+        SmartDashboard.putNumber("relativePose2", Globals.debug9);
         SmartDashboard.putString("relativePose1", Globals.debug10);
-        SmartDashboard.putString("BlueBox", m_points.getPoint("BlueBox").toString());
-        SmartDashboard.putString("YellowBox", m_points.getPoint("YellowBox").toString());
-        SmartDashboard.putString("BlackBox", m_points.getPoint("BlackBox").toString());
-        SmartDashboard.putString("RedBox", m_points.getPoint("RedBox").toString());
-        SmartDashboard.putString("GreenBox", m_points.getPoint("GreenBox").toString());
-        SmartDashboard.putString("Bin", m_points.getPoint("unadjustedBin").toString());
+        SmartDashboard.putString("box1", m_points.getPoint("BlueBox").toString());
+        SmartDashboard.putString("box2", m_points.getPoint("YellowBox").toString());
+
+
         SmartDashboard.putBoolean("mapping", pickedflag);
         servo3.setAngle(cameraAngle);
 
@@ -301,3 +302,7 @@ public class Vision extends SubsystemBase
        
     
 }
+
+ 
+
+

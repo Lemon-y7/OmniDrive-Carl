@@ -1,44 +1,43 @@
 package frc.robot.commands.auto;
 
-
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Globals;
+import frc.robot.Points;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.OmniDrive;
 
 // import the commands
-
-
-/**
- * DriveMotor class
- * <p>
- * This class creates the inline auto command to drive the motor
- */
-public class MoveTest2 extends CommandBase
+public class DemoLoop extends CommandBase
 {
-    private int state=1;
+
     private boolean flag = false;
     private boolean m_endFlag = false;
-    private CommandSchedule cmd = new CommandSchedule();
+    private Demo cmd = new Demo();
+    private final OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
+    private final Points m_points = RobotContainer.m_points;
 
-    //private final ShuffleboardTab tab = Shuffleboard.getTab("Debug");
-
-    //private final NetworkTableEntry D_state = tab.add("State", 0).getEntry();
-
-	  public MoveTest2()
+	  public DemoLoop()
     {
-      state=0;
+
     }
 
     @Override
     public void initialize()
     {
-      //cmd = new CommandSchedule();
+      m_omnidrive.setPose(m_points.getPoint("Zero"));
+      m_points.updatePoint("Pick", m_points.getPoint("Zero"));
+
+
+
       if (Globals.curItem == 4){
         flag = true;
         Globals.runFlag = false;
       }
       else
         flag = false;
-      state = 0;
+
       m_endFlag = false;
     }
     @Override
@@ -50,12 +49,12 @@ public class MoveTest2 extends CommandBase
             cmd.schedule(false);
             flag = true;
             Globals.runFlag = true;
-            state++;
+
         }
         else {
             if (Globals.runFlag == false) {
                 //command group finished, reset flag
-                state++;
+
                 if (Globals.curItem == 4)
                    m_endFlag = true;
                 else
@@ -63,16 +62,13 @@ public class MoveTest2 extends CommandBase
 
             }
         }
-        //D_state.setNumber(state);
-        Globals.debug1 = flag;
-        Globals.debug2 = state;
-        Globals.debug4 = m_endFlag;
+
     }
 
     @Override
     public boolean isFinished()
     {
-        Globals.debug4 = m_endFlag;
+
         return m_endFlag;
     }
     @Override
