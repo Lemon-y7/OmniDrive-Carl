@@ -3,14 +3,11 @@ package frc.robot.subsystems;
 //Java imports
 import java.util.Map;
 
-//Vendor imports
-import com.kauailabs.navx.frc.AHRS;
 import com.studica.frc.Cobra;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.MedianFilter;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -97,7 +94,7 @@ public class Sensor extends SubsystemBase
      * @return value between 0 and 2047 (11-bit)
      */
     public double getCobraRawValue(final int channel) {
-        return filter1.calculate(cobra.getRawValue(channel));
+        return cobra.getRawValue(channel);
     }
 
     /**
@@ -139,9 +136,9 @@ public class Sensor extends SubsystemBase
      */
     public double getSonicDistance1() {
         sonic1.ping();
-        Timer.delay(0.01);
+        Timer.delay(0.02);
 
-        return (filter5.calculate(sonic1.getRangeMM()));
+        return filter5.calculate(sonic1.getRangeMM());
 
     }
     // public double getSonicDistance2(final boolean metric) {
@@ -170,13 +167,13 @@ public class Sensor extends SubsystemBase
 
     public double getCobraTotal()
     {
-        return filter6.calculate((cobraValue[0]+cobraValue[1]+cobraValue[2]+cobraValue[3]));
+        return (cobraValue[0]+cobraValue[1]+cobraValue[2]+cobraValue[3]);
     }
 
     public double offset()
     {
-        return filter7.calculate((cobraValue[0]-30.0 + cobraValue[1]-5.0 + cobraValue[2]*5.0 + cobraValue[3]*30.0)/
-        (cobraValue[0]+ cobraValue[1]+ cobraValue[2]+ cobraValue[3]));
+        return (cobraValue[0]-30.0 + cobraValue[1]-5.0 + cobraValue[2]*5.0 + cobraValue[3]*30.0)/
+        (cobraValue[0]+ cobraValue[1]+ cobraValue[2]+ cobraValue[3]);
         
     }
     public static double x = 0;

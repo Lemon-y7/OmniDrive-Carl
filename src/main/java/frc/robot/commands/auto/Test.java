@@ -19,24 +19,31 @@ public class Test extends AutoCommand{
     public Test() {
 
         super(
-                
-                new MovePose("Pick"),
-                new AlignLeft(),
-                new WaitCommand(1),
-                new InstantCommand(m_omnidrive::setreferencePose),
-                new InstantCommand(m_omnidrive::setreferenceHeading)
+                // new InstantCommand(m_vision::boxLook),
+                // new MovePose("Pick"),
+                // new AlignRight(),
+                // new WaitCommand(1),
+                // new InstantCommand(m_omnidrive::setreferencePose),
+                // new InstantCommand(m_omnidrive::setreferenceHeading),
+                // new MoveRobot(2, Math.PI/2, 0, 0, 1),
+                // new WaitCommand(2),
+                new MapPose(),
+                new WaitCommand(2),
+                new FollowPath("Drop1", Constants.obstacles)
+                // new MovePose2("Pick")
+                // new WaitCommand(2),
+                // new MovePose("BinFront")
+
+                // new MapPose("BlackBox", "RedBox", "Drop2", "nissinDrop", "chipsDrop"),
+                // new MapPose("BlueBox", "YellowBox", "Drop1", "ballDrop", "kitkatDrop"),  
+                // new WaitCommand(1),
+                // new MoveRobot(2, -Math.PI/2, 0, 0, 1),
                 // new MoveTest2()
 
-                // new MapPose("BlackBox", "RedBox", "Drop2"),
-                // new MapPose("GreenBox", "YellowBox", "Drop1"),
-                // new MovePose("Drop2"),
-                // new MovePose("waypoint1"),
-                // new MovePose("Drop1"),
-                // new MovePose("waypoint1"),
-                // new MovePose("Zero")
-   
-
-                
+                // new InstantCommand(m_vision::itemLook),
+                // new WaitCommand(2),
+                // new InstantCommand(m_vision::getItem),
+                // new Pick()
 
         );
     }

@@ -15,32 +15,33 @@ public class CommandSchedule extends AutoCommand{
  private final static OmniDrive m_omnidrive = RobotContainer.m_omnidrive;
 
 
-  // commands to loop go here
+
   
   public CommandSchedule(){
 
     super(
 
-      new MovePose("Pick"),
+      new InstantCommand(m_vision::itemLook),
+      new MoveRobot(0, -0.16, 0, 0, 0.2),
       new WaitCommand(2), 
       new InstantCommand(m_vision::getItem),
       new Pick(),
-      new WaitCommand(2), 
+      new WaitCommand(1), 
       new MovePose("waypoint1"),
       new WaitCommand(1),
       new Deliver(),
       new GripperPick(4),
       new MovePose("waypoint1"),
       new MovePose("Pick"),
-      new AlignLeft(),
+      new AlignRight(),
       new WaitCommand(1),
       new ZeroPose(),
       new InstantCommand(m_omnidrive::resetPose),
       new WaitCommand(2),
       new InstantCommand(m_vision::getItem),
-      
-      new InstantCommand(() -> Globals.runFlag = false ) // do not remove, runflag keeps loop running
+      new InstantCommand(() -> Globals.runFlag = false )
 
+        
     
     );
 

@@ -29,7 +29,8 @@ public class Vision extends SubsystemBase
     boolean pickedflag;
 
     private boolean getNewBarcode;
-    private double convert = 0.0013;
+    private double convert = 0.001;
+
 
     // private final GetTrajectory m_trajectory = RobotContainer.m_trajectory;
     
@@ -47,12 +48,12 @@ public class Vision extends SubsystemBase
     public void boxLook() {
 
       pickedflag = true;
-      cameraAngle = -10;
+      cameraAngle = 120;
     }
     
     public void itemLook() {
       pickedflag = false;
-      cameraAngle = 105 ;
+      cameraAngle = 220 ;
     }
 
     public void readBarcode()
@@ -263,10 +264,7 @@ public class Vision extends SubsystemBase
 
         // getDropPose("YellowBox", "GreenBox", "Drop2"); 
         
-        Globals.kitkat = SmartDashboard.getBoolean("KitKat", false);
-        Globals.chips = SmartDashboard.getBoolean("Chips", false);
-        Globals.nissin = SmartDashboard.getBoolean("Nissin", false);
-        Globals.ball = SmartDashboard.getBoolean("Ball", false);        
+        
 
         SmartDashboard.putNumber("curItem", Globals.curItem);
         SmartDashboard.putNumber("chipy", getChips(1));
@@ -287,12 +285,14 @@ public class Vision extends SubsystemBase
             SmartDashboard.putBoolean("Get New Barcode", false);
         }
         SmartDashboard.putNumber("debug8", Globals.debug8);
-        SmartDashboard.putNumber("relativePose2", Globals.debug9);
+        SmartDashboard.putString("relativePose2", Globals.debug9);
         SmartDashboard.putString("relativePose1", Globals.debug10);
-        SmartDashboard.putString("box1", m_points.getPoint("BlueBox").toString());
-        SmartDashboard.putString("box2", m_points.getPoint("YellowBox").toString());
-
-
+        SmartDashboard.putString("BlueBox", m_points.getPoint("BlueBox").toString());
+        SmartDashboard.putString("YellowBox", m_points.getPoint("YellowBox").toString());
+        SmartDashboard.putString("BlackBox", m_points.getPoint("BlackBox").toString());
+        SmartDashboard.putString("RedBox", m_points.getPoint("RedBox").toString());
+        SmartDashboard.putString("GreenBox", m_points.getPoint("GreenBox").toString());
+        SmartDashboard.putString("Bin", m_points.getPoint("unadjustedBin").toString());
         SmartDashboard.putBoolean("mapping", pickedflag);
         servo3.setAngle(cameraAngle);
 
@@ -302,7 +302,3 @@ public class Vision extends SubsystemBase
        
     
 }
-
- 
-
-
