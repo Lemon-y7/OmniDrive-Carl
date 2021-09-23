@@ -52,29 +52,29 @@ public class Deliver extends AutoCommand {
           Map.entry(CommandSelector.CHIPS, 
             new SequentialCommandGroup(
                 
-              new MovePose("chipsDrop"),
-              new AlignDrop("RedBox")
+              new FollowPath("chipsDrop"),
+              new AlignDrop("YellowBox")
             )
 
           ),
 
           Map.entry(CommandSelector.NISSIN,
             new SequentialCommandGroup(
-              new MovePose("nissinDrop"),
-              new AlignDrop("BlackBox")
+              new FollowPath("nissinDrop"),
+              new AlignDrop("GreenBox")
             )
           ),
 
           Map.entry(CommandSelector.KITKAT, 
             new SequentialCommandGroup(
-              new MovePose("kitKatDrop"),
-              new AlignDrop("YellowBox")
+              new FollowPath("kitKatDrop"),
+              new AlignDrop("RedBox")
             )
           ),
                       
           Map.entry(CommandSelector.BALL, 
             new SequentialCommandGroup(
-              new MovePose("ballDrop"),
+              new FollowPath("ballDrop"),
               new AlignDrop("BlueBox")
               
 

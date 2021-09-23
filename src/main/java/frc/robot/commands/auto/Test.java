@@ -3,6 +3,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.DropPoint;
 import frc.robot.Points;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.OmniDrive;
@@ -14,36 +15,32 @@ public class Test extends AutoCommand{
     private final static Vision m_vision = RobotContainer.m_vision;
     private final static Points m_points = RobotContainer.m_points;
 
+    private final static DropPoint m_drop = new DropPoint();
+
     
 
     public Test() {
 
         super(
-                // new InstantCommand(m_vision::boxLook),
-                // new MovePose("Pick"),
-                // new AlignRight(),
-                // new WaitCommand(1),
-                // new InstantCommand(m_omnidrive::setreferencePose),
-                // new InstantCommand(m_omnidrive::setreferenceHeading),
-                // new MoveRobot(2, Math.PI/2, 0, 0, 1),
-                // new WaitCommand(2),
+                new InstantCommand(m_vision::boxLook),
+                new MoveRobot(0, 0.7, 0, 0, 0.5),
+                new WaitCommand(3),
+                new InstantCommand(m_drop::getBoxes),
+                
+                new MovePose("Pick"),
+                new AlignRight(),
+                new WaitCommand(2),
+                new InstantCommand(m_omnidrive::setreferencePose),
+                new InstantCommand(m_omnidrive::setreferenceHeading),
+                new MoveRobot(2, Math.PI/2, 0, 0, 1),
+                new WaitCommand(3),
                 new MapPose(),
                 new WaitCommand(2),
-                new FollowPath("Drop1", Constants.obstacles)
-                // new MovePose2("Pick")
-                // new WaitCommand(2),
-                // new MovePose("BinFront")
-
-                // new MapPose("BlackBox", "RedBox", "Drop2", "nissinDrop", "chipsDrop"),
-                // new MapPose("BlueBox", "YellowBox", "Drop1", "ballDrop", "kitkatDrop"),  
-                // new WaitCommand(1),
+                new MovePose("Pick"),
+                new AlignRight(),
                 // new MoveRobot(2, -Math.PI/2, 0, 0, 1),
-                // new MoveTest2()
+                new MoveTest2()
 
-                // new InstantCommand(m_vision::itemLook),
-                // new WaitCommand(2),
-                // new InstantCommand(m_vision::getItem),
-                // new Pick()
 
         );
     }
