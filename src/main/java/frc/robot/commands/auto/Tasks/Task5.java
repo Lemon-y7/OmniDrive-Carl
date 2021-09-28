@@ -6,6 +6,7 @@ import frc.robot.Globals;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.AutoCommand;
 import frc.robot.commands.auto.Pick;
+import frc.robot.commands.auto.PickCommands.GripperPick;
 import frc.robot.subsystems.Vision;
 
 public class Task5 extends AutoCommand {
@@ -15,10 +16,11 @@ public class Task5 extends AutoCommand {
   public Task5() {
     super(
       new InstantCommand(m_vision::itemLook),
-      new WaitCommand(2),
-      new OnlyKitkat(),
+      new WaitCommand(4),
       new InstantCommand(m_vision::getItem),
-      new Pick()
+      new Pick(),
+      new WaitCommand(2),
+      new GripperPick(4)
     );
   }
 

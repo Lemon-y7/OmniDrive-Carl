@@ -6,6 +6,7 @@ import frc.robot.Constants;
 import frc.robot.DropPoint;
 import frc.robot.Points;
 import frc.robot.RobotContainer;
+import frc.robot.commands.auto.Tasks.Task5;
 import frc.robot.subsystems.OmniDrive;
 import frc.robot.subsystems.Vision;
 
@@ -22,29 +23,31 @@ public class Test extends AutoCommand{
     public Test() {
 
         super(
-                new InstantCommand(m_vision::boxLook),
-                new MovePose("Pick"),
-                new AlignRight(),
-                new WaitCommand(2),
-                new InstantCommand(m_omnidrive::setreferencePose),
-                new InstantCommand(m_omnidrive::setreferenceHeading),
-                new MoveRobot(2, Math.PI/2, 0, 0, 1),
-                new WaitCommand(3),
-                new InstantCommand(m_drop::getBoxes),
-                new WaitCommand(2),
-                new MoveRobot(1, -0.7, 0, 0, 0.5),
-                new WaitCommand(3),
-                new InstantCommand(m_drop::getBin),
-                new InstantCommand(m_drop::getBoxes),
-                new InstantCommand(m_drop::generatePair),
-                new InstantCommand(m_drop::getDropPose),
-                new InstantCommand(m_vision::getBin),
-                new MovePose("Pick"),
-                new AlignRight(),
-                // new MoveRobot(2, -Math.PI/2, 0, 0, 1),
-                new LoopOne(),
-                new LoopTwo()
-                // new InstantCommand(m_vision::itemLook)
+                new Task5()
+
+                // new InstantCommand(m_vision::boxLook),
+                // new MovePose("Pick"),
+                // new AlignRight(),
+                // new WaitCommand(2),
+                // new InstantCommand(m_omnidrive::setreferencePose),
+                // new InstantCommand(m_omnidrive::setreferenceHeading),
+                // new MoveRobot(2, Math.PI/2, 0, 0, 1),
+                // new WaitCommand(3),
+                // new InstantCommand(m_drop::getBoxes),
+                // new WaitCommand(2),
+                // new MoveRobot(1, -0.7, 0, 0, 0.5),
+                // new WaitCommand(3),
+                // new InstantCommand(m_drop::getBin),
+                // new InstantCommand(m_drop::getBoxes),
+                // new InstantCommand(m_drop::generatePair),
+                // new InstantCommand(m_drop::getDropPose),
+                // new InstantCommand(m_vision::getBin),
+                // new MovePose("Pick"),
+                // new AlignRight(),
+                // // new MoveRobot(2, -Math.PI/2, 0, 0, 1),
+                // new LoopOne(),
+                // new LoopTwo()
+                // // new InstantCommand(m_vision::itemLook)
 
         );
     }
