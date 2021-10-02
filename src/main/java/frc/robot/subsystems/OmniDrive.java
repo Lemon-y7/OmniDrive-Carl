@@ -8,6 +8,7 @@ import com.studica.frc.TitanQuad;
 import com.studica.frc.TitanQuadEncoder;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.MedianFilter;
 //import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
@@ -50,7 +51,7 @@ public class OmniDrive extends SubsystemBase
 
     MedianFilter filter1 = new MedianFilter(10);
     MedianFilter filter2 = new MedianFilter(10);
-
+    DigitalOutput debugout1 = new DigitalOutput(8);
     // Sensors
 
     private final AHRS gyro;
@@ -70,6 +71,9 @@ public class OmniDrive extends SubsystemBase
     private final NetworkTableEntry D_encoderDisp0 = tab.add("Encoder0", 0).getEntry();
     private final NetworkTableEntry D_encoderDisp1 = tab.add("Encoder1", 0).getEntry();
     private final NetworkTableEntry D_encoderDisp2 = tab.add("Encoder2", 0).getEntry();
+    private final NetworkTableEntry D_encoderDist0 = tab.add("Encoder0dist", 0).getEntry();
+    private final NetworkTableEntry D_encoderDist1 = tab.add("Encoder1dist", 0).getEntry();
+    private final NetworkTableEntry D_encoderDist2 = tab.add("Encoder2dist", 0).getEntry();
     private final NetworkTableEntry D_inputW = tab.add("inputW", 0).getEntry();
     private final NetworkTableEntry D_encoderPidOut0 = tab.add("pidout0", 0).getEntry();
     private final NetworkTableEntry D_encoderPidOut1 = tab.add("pidout1", 0).getEntry();
@@ -112,8 +116,8 @@ public class OmniDrive extends SubsystemBase
         // x, y and w speed controler
         pidControllers = new PIDController[Constants.PID_NUM];
         //Speed control
-        pidControllers[0] = new PIDController(1.3, 15.0, 0.04, pid_dT);  //x
-        pidControllers[1] = new PIDController(1.3, 15.0, 0.04, pid_dT);  //y 2.0,32.0,0.02
+        pidControllers[0] = new PIDController(1.3, 16.0, 0.04, pid_dT);  //x
+        pidControllers[1] = new PIDController(1.3, 16.0, 0.04, pid_dT);  //y 2.0,32.0,0.02
         pidControllers[2] = new PIDController(2.5,0.0,0.05, pid_dT);    //w
         pidControllers[2].enableContinuousInput(-Math.PI, Math.PI);
 
@@ -145,7 +149,7 @@ public class OmniDrive extends SubsystemBase
 
     public void setreferencePose(){
 
-        Globals.referencePose = getPose();
+        Globals.referencePose = m_points.getPoint("Map");
 
     }
 
@@ -155,8 +159,12 @@ public class OmniDrive extends SubsystemBase
         odometryW = sPose2d.getRotation().getRadians();
     }
 
-    public void resetPose(){
+    public void resetPose() {
         setPose(Globals.referencePose);
+    }
+
+    public void setZeroPose() {
+        setPose(m_points.getPoint("jigOffset"));
     }
 
     public Pose2d getPose() {
@@ -246,13 +254,13 @@ public class OmniDrive extends SubsystemBase
     
 
     public void doPID( ){
-
+        debugout1.set(true);
         //This is for translational speed PID
         //First calculate wheel speed from encoder feedback
         double dcValue = 0.0;
         for (int i=0; i<Constants.MOTOR_NUM; i++) {
             //vmx encoderDists[i] = encoders[i].getDistance();
-            //encoderDists[i] = encoders[i].getEncoderDistance();
+            encoderDists[i] = encoders[i].getEncoderDistance();
             //wheelSpeeds[i] = encoderSpeeds[i] = (encoderDists[i]-encoderDists_2[i])/pid_dT;
             //encoders[i].getSpeed() in rpm
             wheelSpeeds[i] = encoderSpeeds[i] = -encoders[i].getSpeed()*Math.PI*0.1/60;
@@ -312,7 +320,7 @@ public class OmniDrive extends SubsystemBase
             motors[i].set(motorOuts[i]/max);
             //motors[i].set(0);   //off motor to test encoders manually
         }   
-
+        debugout1.set(false);
    }
     /**
      * Code that runs once every robot loop
@@ -321,7 +329,7 @@ public class OmniDrive extends SubsystemBase
     @Override
     public void periodic()
     {
-
+  
         if (initCnt<20) {
             initCnt++;
             gyro.zeroYaw();
@@ -344,6 +352,9 @@ public class OmniDrive extends SubsystemBase
         D_encoderDisp0.setDouble(encoderSpeeds[0]);
         D_encoderDisp1.setDouble(encoderSpeeds[1]);
         D_encoderDisp2.setDouble(encoderSpeeds[2]);
+        D_encoderDist0.setDouble(encoderDists[0]);
+        D_encoderDist1.setDouble(encoderDists[1]);
+        D_encoderDist2.setDouble(encoderDists[2]);
         D_encoderPidOut0.setDouble(pidInputs[0]);
         D_encoderPidOut1.setDouble(pidInputs[1]);
         D_encoderPidOut2.setDouble(pidInputs[2]);

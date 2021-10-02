@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //WPI imports
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Globals;
 
 public class Sensor extends SubsystemBase
 {
@@ -40,7 +41,7 @@ public class Sensor extends SubsystemBase
     //private final DigitalInput input11;
     private final Cobra cobra;
     private final Ultrasonic sonic1;
-    // private final Ultrasonic sonic2;
+    private final Ultrasonic sonic2;
     private final AnalogInput sharp1;
     private final AnalogInput sharp2;
     private final AnalogInput sharp3;
@@ -81,7 +82,7 @@ public class Sensor extends SubsystemBase
         sharp2 = new AnalogInput(Constants.SHARP2);
         sharp3 = new AnalogInput(Constants.SHARP3);
         sonic1 = new Ultrasonic(Constants.SONIC_TRIGG1, Constants.SONIC_ECHO1);
-        // sonic2 = new Ultrasonic(Constants.SONIC_TRIGG2, Constants.SONIC_ECHO2);
+        sonic2 = new Ultrasonic(Constants.SONIC_TRIGG2, Constants.SONIC_ECHO2);
 
     }
 
@@ -135,10 +136,15 @@ public class Sensor extends SubsystemBase
      * @return distance in mm when metric is true, and inches when metric is false
      */
     public double getSonicDistance1() {
-        sonic1.ping();
-        Timer.delay(0.02);
 
-        return filter5.calculate(sonic1.getRangeMM());
+
+        return Globals.UltrasonicDistance1;
+
+    }
+    public double getSonicDistance2() {
+
+
+        return Globals.UltrasonicDistance2;
 
     }
     // public double getSonicDistance2(final boolean metric) {
@@ -177,7 +183,7 @@ public class Sensor extends SubsystemBase
         
     }
 
-    public static double x = 0;
+    public boolean flag = false;
     
     @Override
     public void periodic()
@@ -187,31 +193,35 @@ public class Sensor extends SubsystemBase
          * Updates for outputs to the shuffleboard
          */
 
-         if( x%2 == 0){
+         if(!flag){
              D_sharpIR2.setDouble(getIRDistance2());
              D_sharpIR1.setDouble(getIRDistance1());
              D_sharpIR3.setDouble(getIRDistance3());
-             D_ultraSonic1.setDouble(getSonicDistance1()); //set to true because we want metric
-            //  D_ultraSonic2.setDouble(getSonicDistance2(true));
+             sonic1.ping();
+             sonic2.ping();
+             cobraValue[0] = getCobraRawValue(0);
+             cobraValue[1] = getCobraRawValue(1);
+             flag = true;
          }
 
-         else{
-            
-             for(int i=0; i<4; i++) {
-                 cobraValue[i] = getCobraRawValue(i);
-             }
-             D_cobra1.setDouble(cobraValue[0]);
-             D_cobra2.setDouble(cobraValue[1]);
-             D_cobra3.setDouble(cobraValue[2]);
-             D_cobra4.setDouble(cobraValue[3]);
+         else {
+             Globals.UltrasonicDistance1 = filter5.calculate(sonic1.getRangeMM());
+             Globals.UltrasonicDistance2 = filter8.calculate(sonic2.getRangeMM());
+             D_ultraSonic1.setNumber(getSonicDistance1());
+             D_ultraSonic2.setNumber(getSonicDistance2());
+             //  for(int i=0; i<4; i++) {
+             //      cobraValue[i] = getCobraRawValue(i);
+             //  }
+             cobraValue[2] = getCobraRawValue(2);
+             cobraValue[3] = getCobraRawValue(3);
+             flag = false;
+
          }
-         x++;
 
-        // D_cobraRaw.setDouble(offset()); //Just going to use channel 0 for demo
-        // D_cobraVoltage.setDouble(getCobraVoltage(0));
+         D_cobra1.setDouble(cobraValue[0]);
+         D_cobra2.setDouble(cobraValue[1]);
+         D_cobra3.setDouble(cobraValue[2]);
+         D_cobra4.setDouble(cobraValue[3]);
 
-        // D_globals.setDouble(Globals.distCount);
-        // D_globals.setBoolean(Globals.endFlag);
-        // D_globalstate.setNumber(Globals.cmdState);
     }
 }

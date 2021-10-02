@@ -29,11 +29,7 @@ public class Vision extends SubsystemBase
     boolean pickedflag;
 
     private boolean getNewBarcode;
-<<<<<<< Updated upstream
     private double convert = 0.0012;
-=======
-    private double convert = 0.0011;
->>>>>>> Stashed changes
 
     // private final GetTrajectory m_trajectory = RobotContainer.m_trajectory;
     
@@ -43,7 +39,7 @@ public class Vision extends SubsystemBase
 
         servo3 = new Servo(Constants.SERVO4);
         boxLook();
-        servo3.setAngle(135);
+        servo3.setAngle(150);
         
     }
 
@@ -51,12 +47,12 @@ public class Vision extends SubsystemBase
     public void boxLook() {
 
       pickedflag = true;
-      cameraAngle = 135;
+      cameraAngle = 150;
     }
     
     public void itemLook() {
       pickedflag = false;
-      cameraAngle = 220 ;
+      cameraAngle = 45 ;
     }
 
     public void readBarcode()

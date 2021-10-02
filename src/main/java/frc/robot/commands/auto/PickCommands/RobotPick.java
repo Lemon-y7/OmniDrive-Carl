@@ -92,9 +92,9 @@ public class RobotPick extends CommandBase
         itemCo[3] = m_vision.getNissin(0);
 
         // adds offset of arm to camera
-        return itemCo[item] + 0.11;
+        return itemCo[item] + 0.15;
     }
-
+ 
     /**
      * Condition to end speed profile
      */
